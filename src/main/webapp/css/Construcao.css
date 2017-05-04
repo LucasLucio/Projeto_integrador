@@ -1,0 +1,10 @@
+body {
+    margin: 0px;
+    background: url(../imgs/Cons.png) no-repeat 400px 250px;;
+    background-attachment: fixed;
+    background-color: #000;
+    
+}
+h1{
+    font-size: 20px;
+}
