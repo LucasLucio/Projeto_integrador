@@ -42,7 +42,7 @@
         <h1>Bem-Vindo, Deslize para baixo para mais informaçoes...</h1>
         <section>
             <div id="divlogin" class="img-parallax">
-                <a href="breve.jsp"><input id="btnlogin" type=button value="Meu Cadastro"></a>
+                <a href="ServletListagem"><input id="btnlogin" type=button value="Listar Cadastros"></a>
                 <a href="cadastro.jsp"><input id="btnCadastro" type=button value="Cadastrar"></a>
             </div>
             <form method="get" target="ServletBusca" action="index.jsp" autocomplete="off">

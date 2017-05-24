@@ -169,5 +169,5 @@ public class Pessoa implements Serializable {
     public String toString() {
         return idPessoa + ";" + rg + ";" + cpf + ";" + telefone + ";" + email + ";" + idade + ";" + sexo;
     }
-
+    
 }
