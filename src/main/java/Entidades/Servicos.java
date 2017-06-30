@@ -6,16 +6,20 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Servicos.findAll", query = "SELECT s FROM Servicos s")
     , @NamedQuery(name = "Servicos.findByIdServicos", query = "SELECT s FROM Servicos s WHERE s.idServicos = :idServicos")
     , @NamedQuery(name = "Servicos.findByNome", query = "SELECT s FROM Servicos s WHERE s.nome = :nome")
-    , @NamedQuery(name = "Servicos.findByPreco", query = "SELECT s FROM Servicos s WHERE s.preco = :preco")})
+    , @NamedQuery(name = "Servicos.findByDescricao", query = "SELECT s FROM Servicos s WHERE s.descricao = :descricao")
+    , @NamedQuery(name = "Servicos.findByValor", query = "SELECT s FROM Servicos s WHERE s.valor = :valor")})
 public class Servicos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,13 +44,20 @@ public class Servicos implements Serializable {
     private Integer idServicos;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 150)
+    @Size(min = 1, max = 50)
     @Column(name = "nome")
     private String nome;
+    @Size(max = 300)
+    @Column(name = "descricao")
+    private String descricao;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "preco")
-    private float preco;
+    @Column(name = "valor")
+    private double valor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicosIdServicos")
+    private List<Contrato> contratoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicosIdServicos")
+    private List<Agenda> agendaList;
 
     public Servicos() {
     }
@@ -54,10 +66,10 @@ public class Servicos implements Serializable {
         this.idServicos = idServicos;
     }
 
-    public Servicos(Integer idServicos, String nome, float preco) {
+    public Servicos(Integer idServicos, String nome, double valor) {
         this.idServicos = idServicos;
         this.nome = nome;
-        this.preco = preco;
+        this.valor = valor;
     }
 
     public Integer getIdServicos() {
@@ -76,12 +88,38 @@ public class Servicos implements Serializable {
         this.nome = nome;
     }
 
-    public float getPreco() {
-        return preco;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setPreco(float preco) {
-        this.preco = preco;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    @XmlTransient
+    public List<Contrato> getContratoList() {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList) {
+        this.contratoList = contratoList;
+    }
+
+    @XmlTransient
+    public List<Agenda> getAgendaList() {
+        return agendaList;
+    }
+
+    public void setAgendaList(List<Agenda> agendaList) {
+        this.agendaList = agendaList;
     }
 
     @Override
@@ -106,7 +144,7 @@ public class Servicos implements Serializable {
 
     @Override
     public String toString() {
-        return idServicos + ";" + nome + ";" + preco;
+        return "Entidades.Servicos[ idServicos=" + idServicos + " ]";
     }
-
+    
 }

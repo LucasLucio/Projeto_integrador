@@ -18,8 +18,12 @@ public class DAOPessoa extends DAOGenerico<Pessoa> {
         }
     }
 
-    public List<Pessoa> listByNome(String rg) {
-        return em.createQuery("SELECT e FROM Pessoa e WHERE e.rg LIKE :rg").setParameter("rg", "%" + rg + "%").getResultList();
+    public List<Pessoa> listByNome(String nome) {
+        return em.createQuery("SELECT e FROM Pessoa e WHERE e.nome LIKE :nome").setParameter("nome", "%" + nome + "%").getResultList();
+    }
+   
+    public List<Pessoa> listByLogin(String login) {
+        return em.createQuery("SELECT e FROM Pessoa e WHERE e.login LIKE :login").setParameter("login", "%" + login + "%").getResultList();
     }
 
     public List<Pessoa> listById(int id) {
@@ -27,7 +31,7 @@ public class DAOPessoa extends DAOGenerico<Pessoa> {
     }
 
     public List<Pessoa> listInOrderNome() {
-        return em.createQuery("SELECT e FROM Pessoa e ORDER BY e.rg").getResultList();
+        return em.createQuery("SELECT e FROM Pessoa e ORDER BY e.nome").getResultList();
     }
 
     public List<Pessoa> listInOrderId() {
@@ -44,15 +48,22 @@ public class DAOPessoa extends DAOGenerico<Pessoa> {
 
         List<String> ls = new ArrayList<>();
         for (int i = 0; i < lf.size(); i++) {
-            ls.add(lf.get(i).getIdPessoa()
+            ls.add(lf.get(i).getIdPessoas()
+ + "-" + lf.get(i).getNome()
  + "-" + lf.get(i).getRg()
  + "-" + lf.get(i).getCpf()
  + "-" + lf.get(i).getTelefone()
  + "-" + lf.get(i).getEmail()
- + "-" + lf.get(i).getIdade()
+ + "-" + lf.get(i).getLogin()
+ + "-" + lf.get(i).getSenha()
+ + "-" + lf.get(i).getDataNasc()
  + "-" + lf.get(i).getSexo()
+ + "-" + lf.get(i).getDataCadastro()
+ + "-" + lf.get(i).getCidadeIdCidade()
+ + "-" + lf.get(i).getContratoList()
 );
         }
         return ls;
     }
+
 }

@@ -87,12 +87,11 @@ public class ServletListagem extends HttpServlet {
         DAOPessoa controle = new DAOPessoa();
         Pessoa entidade = new Pessoa();
 
-        entidade.setIdPessoa(Integer.valueOf(Id));
+        entidade.setIdPessoas(Integer.valueOf(Id));
         entidade.setRg(RG);
         entidade.setCpf(CPF);
         entidade.setTelefone(Telefone);
         entidade.setEmail(Email);
-        entidade.setIdade(Integer.valueOf(Idade));
         entidade.setSexo(Sexo);
         controle.inserir(entidade);
 

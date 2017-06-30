@@ -9,7 +9,7 @@
 <html>
     <head>
         <title> Help Entertainment </title>
-        <link rel="stylesheet" type="text/css" href="css/estilo_p1.css" />
+        <link rel="stylesheet" type="text/css" href="css/Estilo_ind.css" />
         <meta charset="UTF-8">
         <script>
 
@@ -42,7 +42,7 @@
         <h1>Bem-Vindo, Deslize para baixo para mais informaçoes...</h1>
         <section>
             <div id="divlogin" class="img-parallax">
-                <a href="ServletListagem"><input id="btnlogin" type=button value="Listar Cadastros"></a>
+                <a href="login.jsp"><input id="btnlogin" type=button value="Login"></a>
                 <a href="cadastro.jsp"><input id="btnCadastro" type=button value="Cadastrar"></a>
             </div>
             <form method="get" target="ServletBusca" action="index.jsp" autocomplete="off">

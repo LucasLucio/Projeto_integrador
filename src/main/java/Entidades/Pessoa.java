@@ -6,16 +6,25 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,75 +35,114 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pessoa.findAll", query = "SELECT p FROM Pessoa p")
-    , @NamedQuery(name = "Pessoa.findByIdPessoa", query = "SELECT p FROM Pessoa p WHERE p.idPessoa = :idPessoa")
+    , @NamedQuery(name = "Pessoa.findByIdPessoas", query = "SELECT p FROM Pessoa p WHERE p.idPessoas = :idPessoas")
+    , @NamedQuery(name = "Pessoa.findByNome", query = "SELECT p FROM Pessoa p WHERE p.nome = :nome")
     , @NamedQuery(name = "Pessoa.findByRg", query = "SELECT p FROM Pessoa p WHERE p.rg = :rg")
     , @NamedQuery(name = "Pessoa.findByCpf", query = "SELECT p FROM Pessoa p WHERE p.cpf = :cpf")
     , @NamedQuery(name = "Pessoa.findByTelefone", query = "SELECT p FROM Pessoa p WHERE p.telefone = :telefone")
     , @NamedQuery(name = "Pessoa.findByEmail", query = "SELECT p FROM Pessoa p WHERE p.email = :email")
-    , @NamedQuery(name = "Pessoa.findByIdade", query = "SELECT p FROM Pessoa p WHERE p.idade = :idade")
-    , @NamedQuery(name = "Pessoa.findBySexo", query = "SELECT p FROM Pessoa p WHERE p.sexo = :sexo")})
+    , @NamedQuery(name = "Pessoa.findByLogin", query = "SELECT p FROM Pessoa p WHERE p.login = :login")
+    , @NamedQuery(name = "Pessoa.findBySenha", query = "SELECT p FROM Pessoa p WHERE p.senha = :senha")
+    , @NamedQuery(name = "Pessoa.findByDataNasc", query = "SELECT p FROM Pessoa p WHERE p.dataNasc = :dataNasc")
+    , @NamedQuery(name = "Pessoa.findBySexo", query = "SELECT p FROM Pessoa p WHERE p.sexo = :sexo")
+    , @NamedQuery(name = "Pessoa.findByDataCadastro", query = "SELECT p FROM Pessoa p WHERE p.dataCadastro = :dataCadastro")})
 public class Pessoa implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_pessoa")
-    private Integer idPessoa;
+    @Column(name = "id_pessoas")
+    private Integer idPessoas;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 40)
+    @Size(min = 1, max = 250)
+    @Column(name = "nome")
+    private String nome;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "rg")
     private String rg;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 11)
     @Column(name = "cpf")
     private String cpf;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 50)
     @Column(name = "telefone")
     private String telefone;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 100)
     @Column(name = "email")
     private String email;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idade")
-    private int idade;
+    @Size(min = 1, max = 100)
+    @Column(name = "login")
+    private String login;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 32)
+    @Column(name = "senha")
+    private String senha;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "data_nasc")
+    @Temporal(TemporalType.DATE)
+    private Date dataNasc;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
     @Column(name = "sexo")
     private String sexo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "data_cadastro")
+    @Temporal(TemporalType.DATE)
+    private Date dataCadastro;
+    @JoinColumn(name = "cidade_id_cidade", referencedColumnName = "id_cidade")
+    @ManyToOne(optional = false)
+    private Cidade cidadeIdCidade;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaIdPessoas")
+    private List<Contrato> contratoList;
 
     public Pessoa() {
     }
 
-    public Pessoa(Integer idPessoa) {
-        this.idPessoa = idPessoa;
+    public Pessoa(Integer idPessoas) {
+        this.idPessoas = idPessoas;
     }
 
-    public Pessoa(Integer idPessoa, String rg, String cpf, String telefone, String email, int idade, String sexo) {
-        this.idPessoa = idPessoa;
+    public Pessoa(Integer idPessoas, String nome, String rg, String cpf, String telefone, String login, String senha, Date dataNasc, String sexo, Date dataCadastro) {
+        this.idPessoas = idPessoas;
+        this.nome = nome;
         this.rg = rg;
         this.cpf = cpf;
         this.telefone = telefone;
-        this.email = email;
-        this.idade = idade;
+        this.login = login;
+        this.senha = senha;
+        this.dataNasc = dataNasc;
         this.sexo = sexo;
+        this.dataCadastro = dataCadastro;
     }
 
-    public Integer getIdPessoa() {
-        return idPessoa;
+    public Integer getIdPessoas() {
+        return idPessoas;
     }
 
-    public void setIdPessoa(Integer idPessoa) {
-        this.idPessoa = idPessoa;
+    public void setIdPessoas(Integer idPessoas) {
+        this.idPessoas = idPessoas;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getRg() {
@@ -129,12 +177,28 @@ public class Pessoa implements Serializable {
         this.email = email;
     }
 
-    public int getIdade() {
-        return idade;
+    public String getLogin() {
+        return login;
     }
 
-    public void setIdade(int idade) {
-        this.idade = idade;
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public Date getDataNasc() {
+        return dataNasc;
+    }
+
+    public void setDataNasc(Date dataNasc) {
+        this.dataNasc = dataNasc;
     }
 
     public String getSexo() {
@@ -145,10 +209,35 @@ public class Pessoa implements Serializable {
         this.sexo = sexo;
     }
 
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public Cidade getCidadeIdCidade() {
+        return cidadeIdCidade;
+    }
+
+    public void setCidadeIdCidade(Cidade cidadeIdCidade) {
+        this.cidadeIdCidade = cidadeIdCidade;
+    }
+
+    @XmlTransient
+    public List<Contrato> getContratoList() {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList) {
+        this.contratoList = contratoList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idPessoa != null ? idPessoa.hashCode() : 0);
+        hash += (idPessoas != null ? idPessoas.hashCode() : 0);
         return hash;
     }
 
@@ -159,7 +248,7 @@ public class Pessoa implements Serializable {
             return false;
         }
         Pessoa other = (Pessoa) object;
-        if ((this.idPessoa == null && other.idPessoa != null) || (this.idPessoa != null && !this.idPessoa.equals(other.idPessoa))) {
+        if ((this.idPessoas == null && other.idPessoas != null) || (this.idPessoas != null && !this.idPessoas.equals(other.idPessoas))) {
             return false;
         }
         return true;
@@ -167,7 +256,7 @@ public class Pessoa implements Serializable {
 
     @Override
     public String toString() {
-        return idPessoa + ";" + rg + ";" + cpf + ";" + telefone + ";" + email + ";" + idade + ";" + sexo;
+        return "Entidades.Pessoa[ idPessoas=" + idPessoas + " ]";
     }
     
 }
